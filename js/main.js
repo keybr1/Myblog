@@ -16,6 +16,23 @@ const emailInput = document.querySelector('.login-email');
 const passwordInput = document.querySelector('.login-password');
 const loginSignup = document.querySelector('.login-signup');
 
+const userEl = document.querySelector('.user');
+const userElName = document.querySelector('.user-name');
+
+const toggleAuthDom = () => {
+  const user = setUsers.user;
+  console.log('user: ', user);
+
+  if (user) {
+    loginEl.style.display = 'none';
+    userEl.style.display = '';
+    userElName.textContent = user.displayName;
+  } else {
+    loginEl.style.display = '';
+    userEl.style.display = 'none';
+  }
+}
+
 const listUsers = [
   {
     id: '01',
@@ -39,25 +56,56 @@ const listUsers = [
 
 const setUsers = {
   user: null,
-  logIn() {
-    console.log('вход ');
+  logIn(email, password, handler) {
+    const user = this.getUser(email);
+    if(user && user.password === password) {
+      this.authorizedUser(user);
+      handler();
+    } else {
+      alert('User with this data not found')
+    }
+    console.log(email, password);
   },
   LogOut() {
     console.log('выход');
   },
-  signUp() {
-    console.log('регистрация');
-  }
+  signUp(email, password, handler) {
+    if(!this.getUser(email)) {
+      const user = { email, password, displayName: email};
+      listUsers.push(user);
+      this.authorizedUser(user);
+      handler();
+    } else {
+      alert('user alreade registrated!');
+    }
+  },
+
+getUser(email) {
+  return listUsers.find(item => item.email === email);
+  // let user = null;
+  // for(let i = 0; i < listUsers.length; i++) {
+  //   if (listUsers[i].email === email) {
+  //     user = listUsers[i];
+  //     break;
+  //   } 
+  // }
+  // return user;
+},
+authorizedUser(user) {
+  this.user = user;
+}
+
 
 }
 
 loginForm.addEventListener('submit', (e) => {
   e.preventDefault();
-  setUsers.logIn();
+  setUsers.logIn(emailInput.value, passwordInput.value, toggleAuthDom);
 });
 
 loginSignup.addEventListener('click', (e) => {
   e.preventDefault();
-  setUsers.signUp();
+  setUsers.signUp(emailInput.value, passwordInput.value, toggleAuthDom);
 })
 
+toggleAuthDom();
