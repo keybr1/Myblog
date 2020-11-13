@@ -23,25 +23,30 @@ const editPhotoURL = document.querySelector('.edit-photo');
 const userAvatarEl = document.querySelector('.user-avatar');
 
 const postWrapper = document.querySelector('.posts'); 
+const buttonNewPost = document.querySelector('.button-new-post');
+const addPostEl = document.querySelector('.add-post');
 
 const listUsers = [
   {
     id: '01',
     email: 'max@gmail.com',
     password: '123',
-    displayName: 'Maxjs'
+    displayName: 'Maxjs',
+    photo: 'https://cs4.pikabu.ru/post_img/2015/11/19/8/1447940919_462452839.jpg',
   },
   {
     id: '02',
     email: 'sanya@gmail.com',
     password: '12345',
-    displayName: 'Sanyajs'
+    displayName: 'Sanyajs',
+    photo: 'https://i.pinimg.com/originals/ce/cf/86/cecf86e0e1acec29e0e12c375485fb33.jpg',
   },
   {
     id: '03',
     email: 'kir@gmail.com',
     password: '1234566',
-    displayName: 'Kirjs'
+    displayName: 'Kirjs',
+    photo: 'https://avatars.mds.yandex.net/get-zen_doc/1137439/pub_5bf7d5a0e6a7b500aae4bf45_5bf7d9fc2d7d7900aa732c6a/scale_1200',
   }
 ];
 
@@ -125,7 +130,7 @@ const setPosts = {
         'мое',
         'случайность',
       ],
-      author: 'max@gmail.com',
+      author: {displayName: 'Maks', photo: 'https://cs4.pikabu.ru/post_img/2015/11/19/8/1447940919_462452839.jpg'},
       date: '12.11.2020, 13:49:00',
       like: 34,
       comments: 12,
@@ -140,7 +145,7 @@ const setPosts = {
         'горячее',
         'случайность',
       ],
-      author: 'sanya@gmail.com',
+      author: {displayName: 'Sanya', photo: 'https://i.pinimg.com/originals/ce/cf/86/cecf86e0e1acec29e0e12c375485fb33.jpg'},
       date: '13.11.2020, 09:49:00',
       like: 25,
       comments: 18,
@@ -155,7 +160,7 @@ const setPosts = {
         'горячее',
         'мое',
       ],
-      author: 'kir@gmail.com',
+      author: {displayName: 'Kir', photo: 'https://avatars.mds.yandex.net/get-zen_doc/1137439/pub_5bf7d5a0e6a7b500aae4bf45_5bf7d9fc2d7d7900aa732c6a/scale_1200'},
       date: '10.11.2020, 13:49:00',
       like: 13,
       comments: 19,
@@ -174,18 +179,20 @@ const toggleAuthDom = () => {
     userEl.style.display = '';
     userElName.textContent = user.displayName;
     userAvatarEl.src = user.photo ? user.photo : userAvatarEl.src;
+    buttonNewPost.classList.add('visible');
   } else {
     loginEl.style.display = '';
     userEl.style.display = 'none';
+    buttonNewPost.classList.remove('visible');
+    addPostEl.classList.remove('visible');
+    postWrapper.classList.add('visible');
   }
 };
-
-
 
 const showAllPosts = () => {
 
   let postsHTML =  '';
-  setPosts.allPosts.forEach(({ title, text, date, like, comments,tags }) => {
+  setPosts.allPosts.forEach(({ title, text, date, like, comments, tags, author }) => {
 
     postsHTML += `
     <section class="post">
@@ -193,9 +200,7 @@ const showAllPosts = () => {
       <h2 class="post-title">${title}</h2>
       <p class="post-text">${text}</p>
       <div class="tags">
-        ${tags.map(e => {
-          e.innerHTML;
-        })}
+        ${tags.map(e => `<a href="#" class="tag">#${e}</a>`)}
       </div>
       <!-- /.tags -->
     </div>
@@ -228,10 +233,10 @@ const showAllPosts = () => {
       <!-- /.post-buttons -->
       <div class="post-author">
         <div class="author-about">
-          <a href="#" class="author-username">arteislamov</a>
+          <a href="#" class="author-username">${author.displayName}</a>
           <span class="post-time">${date}</span>
         </div>
-        <a href="#" class="author-link"><img src="img/avatar.jpeg" alt="avatar" class="author-avatar"></a>
+        <a href="#" class="author-link"><img src=${author.photo || "img/avatar.jpeg"} alt="avatar" class="author-avatar"></a>
       </div>
       <!-- /.post-author -->
     </div>
@@ -242,9 +247,10 @@ const showAllPosts = () => {
   postWrapper.innerHTML = postsHTML;
 };
 
-
-
-
+const showAddPost = () => {
+    addPostEl.classList.add('visible');
+    postWrapper.classList.remove('visible');
+}
 
 const init = () => {
   loginForm.addEventListener('submit', (e) => {
@@ -275,12 +281,17 @@ const init = () => {
     setUsers.editUser(editUserName.value, editPhotoURL.value, toggleAuthDom);
     editContainer.classList.remove('visible');
   });
-// отслеживаем клик по кнопке меню и запускаем функцию 
+  // отслеживаем клик по кнопке меню и запускаем функцию 
   menuToggle.addEventListener('click', function (event) {
-    // отменяем стандартное поведение ссылки
+  // отменяем стандартное поведение ссылки
     event.preventDefault();
-    // вешаем класс на меню, когда кликнули по кнопке меню 
+  // вешаем класс на меню, когда кликнули по кнопке меню 
     menu.classList.toggle('visible');
+  });
+
+  buttonNewPost.addEventListener('click', e => {
+    e.preventDefault();
+    showAddPost();
   })
 
   showAllPosts();
