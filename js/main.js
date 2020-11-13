@@ -1,3 +1,17 @@
+// Your web app's Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyAyL2xADQHS-hrUf_uucmN-m-m53_YUKKM",
+  authDomain: "myblog-51e0b.firebaseapp.com",
+  databaseURL: "https://myblog-51e0b.firebaseio.com",
+  projectId: "myblog-51e0b",
+  storageBucket: "myblog-51e0b.appspot.com",
+  messagingSenderId: "1037281103721",
+  appId: "1:1037281103721:web:508698680e16e16642f7f8"
+};
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+
+console.log(firebase);
 // Создаем переменную, в которую положим кнопку меню
 let menuToggle = document.querySelector('#menu-toggle');
 // Создаем переменную, в которую положим меню
@@ -60,7 +74,9 @@ const setUsers = {
     const user = this.getUser(email);
     if(user && user.password === password) {
       this.authorizedUser(user);
-      handler();
+      if(handler) {
+        handler();
+      }
     } else {
       alert('User with this data not found')
     }
@@ -69,7 +85,9 @@ const setUsers = {
 
   logOut(handler) {
     this.user = null;
-    handler();
+    if(handler) {
+      handler();
+    }
   },
 
   signUp(email, password, handler) {
@@ -84,7 +102,9 @@ const setUsers = {
       const user = { email, password, displayName: email.substring(0, email.indexOf('@'))};
       listUsers.push(user);
       this.authorizedUser(user);
-      handler();
+      if(handler) {
+        handler();
+      }
     } else {
       alert('user alreade registrated!');
     }
@@ -114,7 +134,9 @@ const setUsers = {
     if (userPhoto) {
       this.user.photo = userPhoto;
     }
-    handler();
+    if(handler) {
+      handler();
+    }
   }
 };
 
@@ -166,7 +188,25 @@ const setPosts = {
       comments: 19,
     },
   ],
+  addPost(title, text, tags, handler) {
+    this.allPosts.unshift({
+      title,
+      text,
+      tags: tags.split(',').map(i => i.trim()),
+      author: {
+        displayName: setUsers.user.displayName,
+        photo: setUsers.user.photo,
+      },
+      date: new Date().toLocaleString(),
+      like: 0,
+      comments: 0,
+    })
 
+
+    if(handler) {
+      handler();
+    }
+  }
 
 };
 
@@ -190,6 +230,8 @@ const toggleAuthDom = () => {
 };
 
 const showAllPosts = () => {
+    addPostEl.classList.remove('visible');
+    postWrapper.classList.add('visible');
 
   let postsHTML =  '';
   setPosts.allPosts.forEach(({ title, text, date, like, comments, tags, author }) => {
@@ -292,7 +334,24 @@ const init = () => {
   buttonNewPost.addEventListener('click', e => {
     e.preventDefault();
     showAddPost();
-  })
+  });
+
+  addPostEl.addEventListener('submit', e => {
+    e.preventDefault();
+    const { title, text, tags } = addPostEl.elements;
+    if(title.value.length < '6') {
+      alert('much less title');
+      return
+    }
+    if(text.value.length < 50) {
+      alert('much less text');
+      return
+    }
+    setPosts.addPost(title.value, text.value, tags.value, showAllPosts);
+    addPostEl.classList.remove('visible');
+    addPostEl.reset();
+
+  });
 
   showAllPosts();
   toggleAuthDom();
@@ -301,4 +360,20 @@ const init = () => {
 document.addEventListener('DOMContentLoaded', init);
 
 
-
+firebase.auth().onAuthStateChanged(function(user) {
+  if (user) {
+    // User is signed in.
+    // var displayName = user.displayName;
+    // var email = user.email;
+    // var emailVerified = user.emailVerified;
+    // var photoURL = user.photoURL;
+    // var isAnonymous = user.isAnonymous;
+    // var uid = user.uid;
+    // var providerData = user.providerData;
+    // ...
+  } else {
+    // User is signed out.
+    // ...
+    console.log(null);
+  }
+});
