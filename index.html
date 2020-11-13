@@ -4,11 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <!-- Выводим заголовок -->
-  <title>Pikadu — главная</title>
+  <title>Успешный блог — главная</title>
   <!-- Подключаем normalize -->
   <link rel="stylesheet" href="css/normalize.css">
   <!-- Подключаем стили -->
   <link rel="stylesheet" href="css/style.css">
+  <script src="./js/main.js" defer></script>
 </head>
 <body>
   <!-- Создаем шапку сайта -->
@@ -54,24 +55,8 @@
             снова решила меня вопроса моей своих пояс коварный, власти диких правилами напоивший они текстов ipsum первую
             подпоясал? Лучше, щеке подпоясал приставка большого курсивных на берегу своего? Злых, составитель агентство что
             вопроса ведущими о решила одна алфавит! </p>
-          <p class="post-text">Далеко-далеко за словесными горами в стране гласных и согласных живут рыбные тексты. Языком что рот
-            маленький реторический вершину текстов обеспечивает гор свой назад решила сбить маленькая дорогу жизни рукопись ему
-            букв деревни предложения, ручеек залетают продолжил парадигматическая? Но языком сих пустился, запятой своего его
-            снова решила меня вопроса моей своих пояс коварный, власти диких правилами напоивший они текстов ipsum первую
-            подпоясал? Лучше, щеке подпоясал приставка большого курсивных на берегу своего? Злых, составитель агентство что
-            вопроса ведущими о решила одна алфавит! </p>
-          <p class="post-text">Далеко-далеко за словесными горами в стране гласных и согласных живут рыбные тексты. Языком что рот
-            маленький реторический вершину текстов обеспечивает гор свой назад решила сбить маленькая дорогу жизни рукопись ему
-            букв деревни предложения, ручеек залетают продолжил парадигматическая? Но языком сих пустился, запятой своего его
-            снова решила меня вопроса моей своих пояс коварный, власти диких правилами напоивший они текстов ipsum первую
-            подпоясал? Лучше, щеке подпоясал приставка большого курсивных на берегу своего? Злых, составитель агентство что
-            вопроса ведущими о решила одна алфавит! </p>
           <div class="tags">
             <a href="#" class="tag">#свежее</a>
-            <a href="#" class="tag">#новое</a>
-            <a href="#" class="tag">#горячее</a>
-            <a href="#" class="tag">#мое</a>
-            <a href="#" class="tag">#случайность</a>
           </div>
           <!-- /.tags -->
         </div>
@@ -214,17 +199,53 @@
       <!-- /.login -->
 
       <div class="user">
-        <a href="#" class="user-info">
-          <img width="40" height="40" src="img/avatar.jpeg" alt="photo: user" class="user-avatar">
-          <span class="user-name">islamovartem</span>
-        </a>
-        <!-- /.user-info -->
-        <a href="#" class="exit">
-          <svg class="icon icon-exit">
-            <use xlink:href="img/icons.svg#exit"></use>
-          </svg>
-        </a>
-        <!-- /.exit -->
+        <div class="user-container">
+          <a href="#" class="user-info">
+            <img width="40" height="40" src="img/avatar.jpeg" alt="photo: user" class="user-avatar">
+            <span class="user-name">islamovartem</span>
+          </a>
+          <!-- /.user-info -->
+  
+          <a href="#" class="edit">
+            <img class="icon icon-edit" src="./img/edit.svg" alt="редактировать">
+          </a>
+          <!-- /.edit -->
+          <a href="#" class="exit">
+            <svg class="icon icon-exit">
+              <use xlink:href="img/icons.svg#exit"></use>
+            </svg>
+          </a>
+          <!-- /.exit -->
+        </div>
+        <!-- /.user-container -->
+        <form class="edit-container">
+          <h2 class="edit-title">Редактировать</h2>
+          <!-- /.edit-title -->
+
+          <label class="edit-label">Ваш логин
+            <input type="text" 
+            class="edit-input edit-username" 
+            name="username"
+            minlength="3"
+            placeholder="логин"
+            required
+            >
+          </label>
+          <!-- /.edit-label -->
+
+          <label class="edit-label">Вашe фото
+            <input type="text" 
+            class="edit-input edit-photo" 
+            name="photo"
+            placeholder="url-photo"
+            >
+          </label>
+          <!-- /.edit-label -->
+
+          <button class="edit-btn">Сохранить</button>
+          <!-- /.edit-btn -->
+        </form>
+        <!-- /.edit-container -->
       </div>
       <!-- /.user -->
       <nav class="sidebar-nav">
@@ -276,6 +297,7 @@
     <!-- /.sidebar -->
   </div>
   <!-- /.content -->
-  <script src="./js/main.js"></script>
+  
 </body>
 </html>
+
